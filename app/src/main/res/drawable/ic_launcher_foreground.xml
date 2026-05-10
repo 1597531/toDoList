@@ -4,7 +4,8 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- Generic list glyph (no custom artwork) -->
     <path
-        android:fillColor="#1976D2"
-        android:pathData="M54,34c-11,0 -20,9 -20,20s9,20 20,20 20,-9 20,-20 -9,-20 -20,-20zM47,58 L42,53l2.8,-2.8L47,52.4l10.2,-10.2L60,45l-13,13z" />
+        android:fillColor="#5F6368"
+        android:pathData="M32,38h10v10h-10z M48,40h36v6h-36z M32,54h10v10h-10z M48,56h36v6h-36z M32,70h10v10h-10z M48,72h30v6h-30z" />
 </vector>

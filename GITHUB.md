@@ -1,5 +1,11 @@
 # GitHub 同步说明
 
+## 项目简介
+
+本仓库为 Android 待办应用 **toDoList**（列表清单）：Kotlin + Jetpack Compose + Room，详情见项目主页 [README.md](README.md)。
+
+---
+
 ## 仓库信息
 
 | 项目 | 内容 |
@@ -37,4 +43,4 @@ git clone https://github.com/1597531/toDoList.git
 
 ## 更新记录
 
-- 2026-05-10：连接远程 `1597531/toDoList`，合并远程 README 并完成首次推送；补充本文档与 Android 工程文件同步说明。
+- 2026-05-10：连接远程并完成推送；Android 工程同步；README / GITHUB.md 补充项目介绍与 Git 说明。

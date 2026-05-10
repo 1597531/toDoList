@@ -1,6 +1,8 @@
 package com.example.todolist.ui.edit
 
 import android.app.Application
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,9 +27,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todolist.ui.theme.mikuFilledButtonColors
+import com.example.todolist.ui.theme.mikuOutlinedPrimaryBorderStroke
+import com.example.todolist.ui.theme.mikuOutlinedPrimaryButtonColors
+import com.example.todolist.ui.theme.mikuOutlinedTextFieldColors
+import com.example.todolist.ui.theme.mikuTopAppBarColors
 import com.example.todolist.util.TimeFormatters
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,71 +51,98 @@ fun TodoEditScreen(
     )
     val state by vm.uiState.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(if (state.isNew) "新建事项" else "编辑事项") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
-                    }
-                },
-            )
-        },
-    ) { innerPadding ->
-        Column(
+    Box(modifier = Modifier.fillMaxSize()) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState()),
-        ) {
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = state.title,
-                onValueChange = vm::setTitle,
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("标题") },
-                singleLine = false,
-                minLines = 1,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            OutlinedTextField(
-                value = state.detail,
-                onValueChange = vm::setDetail,
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("备注（可选）") },
-                minLines = 3,
-            )
-            if (!state.isNew && state.loadedEntity != null) {
-                Spacer(modifier = Modifier.height(16.dp))
-                val e = state.loadedEntity!!
-                Text(
-                    text = "创建 ${TimeFormatters.formatMillis(e.createdAtMillis)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f),
+                            MaterialTheme.colorScheme.background,
+                        ),
+                    ),
+                ),
+        )
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = Color.Transparent,
+            topBar = {
+                TopAppBar(
+                    title = { Text(if (state.isNew) "新建事项" else "编辑事项") },
+                    navigationIcon = {
+                        IconButton(onClick = onNavigateBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
+                        }
+                    },
+                    colors = mikuTopAppBarColors(),
                 )
-                Text(
-                    text = "上次更新 ${TimeFormatters.formatMillis(e.updatedAtMillis)}（保存后会刷新）",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(
-                onClick = { vm.save(onNavigateBack) },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = state.title.trim().isNotEmpty(),
+            },
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState()),
             ) {
-                Text("保存")
-            }
-            if (!state.isNew) {
-                Spacer(modifier = Modifier.height(12.dp))
-                OutlinedButton(
-                    onClick = { vm.delete(onNavigateBack) },
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = state.title,
+                    onValueChange = vm::setTitle,
                     modifier = Modifier.fillMaxWidth(),
+                    label = { Text("标题") },
+                    singleLine = false,
+                    minLines = 1,
+                    colors = mikuOutlinedTextFieldColors(),
+                    shape = MaterialTheme.shapes.medium,
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = state.detail,
+                    onValueChange = vm::setDetail,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("备注（可选）") },
+                    minLines = 3,
+                    colors = mikuOutlinedTextFieldColors(),
+                    shape = MaterialTheme.shapes.medium,
+                )
+                if (!state.isNew && state.loadedEntity != null) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    val e = state.loadedEntity!!
+                    Text(
+                        text = "创建 ${TimeFormatters.formatMillis(e.createdAtMillis)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Text(
+                        text = "上次更新 ${TimeFormatters.formatMillis(e.updatedAtMillis)}（保存后会刷新）",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+                Button(
+                    onClick = { vm.save(onNavigateBack) },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = state.title.trim().isNotEmpty(),
+                    colors = mikuFilledButtonColors(),
+                    shape = MaterialTheme.shapes.medium,
                 ) {
-                    Text("删除")
+                    Text("保存")
+                }
+                if (!state.isNew) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedButton(
+                        onClick = { vm.delete(onNavigateBack) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = mikuOutlinedPrimaryButtonColors(),
+                        shape = MaterialTheme.shapes.medium,
+                        border = mikuOutlinedPrimaryBorderStroke(),
+                    ) {
+                        Text("删除")
+                    }
                 }
             }
         }
